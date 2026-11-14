@@ -77,7 +77,6 @@
             100% { transform: scale(1, 1.01) rotate(0deg); opacity: 1; }
         }
 
-        /* Respect people who ask for less motion */
         @media (prefers-reduced-motion: reduce) {
             .diya-flame { animation: none; }
             #card-display { animation: none; }
@@ -165,7 +164,6 @@
             line-height: 1.5;
         }
 
-        /* In-page song player */
         .song-block {
             width: 100%;
         }
@@ -181,3 +179,177 @@
             margin-bottom: 0.6rem;
             border-radius: 12px;
             overflow: hidden;
+            border: 1px solid rgba(229, 193, 88, 0.3);
+        }
+
+        /* Card Modal / Display Styling */
+        #card-display {
+            display: none;
+            margin-top: 1.5rem;
+            padding: 24px;
+            background: linear-gradient(135deg, #5c121e 0%, #380810 100%);
+            border: 2px solid var(--gold-accent);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-star {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 15px auto;
+            background: radial-gradient(circle, #fff 0%, #ffbd39 60%, transparent 80%);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--gold-accent);
+        }
+
+        .card-title-en {
+            font-size: 1.3rem;
+            color: var(--gold-accent);
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .card-title-hi {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .card-reflection {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            font-style: italic;
+            opacity: 0.95;
+        }
+
+        .btn-close {
+            margin-top: 15px;
+            background: transparent;
+            border: 1px solid rgba(249,246,240,0.3);
+            color: var(--text-light);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header-org">
+            The Brahma Kumaris<br>
+            Serving in Vancouver, Surrey & Abbotsford, B.C. Canada
+        </div>
+
+        <!-- Flickering Diya Lamp -->
+        <div class="diya-container">
+            <!-- SVG Diya Flame -->
+            <svg class="diya-flame" viewBox="0 0 50 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M25 0C25 0 50 30 50 52C50 67.464 38.807 80 25 80C11.193 80 0 67.464 0 52C0 30 25 0 25 0Z" fill="url(#flame-grad)"/>
+                <defs>
+                    <linearGradient id="flame-grad" x1="25" y1="0" x2="25" y2="80" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#FFFFFF"/>
+                        <stop offset="35%" stop-color="#FFDD55"/>
+                        <stop offset="70%" stop-color="#FF5511"/>
+                        <stop offset="100%" stop-color="#AA1100"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+            <div class="diya-bowl"></div>
+        </div>
+
+        <h1>BE LIGHT • I AM LIGHT</h1>
+        <div class="hindi-text">प्रकाश स्वरूप बनो • मैं प्रकाश हूँ</div>
+
+        <p class="description" id="main-desc">
+            Look quietly into the flame, steady your mind and draw your personal Diwali virtues card.
+        </p>
+
+        <!-- Primary Virtue Card Draw Action -->
+        <button class="btn-primary" onclick="drawVirtueCard()">DRAW DIWALI VIRTUE CARD</button>
+
+        <!-- Dynamic Card Display Box -->
+        <div id="card-display">
+            <div class="card-star"></div>
+            <div class="card-title-en" id="c-en"></div>
+            <div class="card-title-hi" id="c-hi"></div>
+            <div class="card-reflection" id="c-ref"></div>
+            <button class="btn-close" onclick="resetView()">Draw Another Card</button>
+        </div>
+
+        <!-- Song Link / Player Block -->
+        <div class="song-block" id="song-block">
+            <a href="https://youtu.be/S-AmFxA9xKc" target="_blank" class="btn-secondary" id="song-btn">
+                ▶ 'Come Into The Light' song by Bliss ✨
+            </a>
+        </div>
+
+        <!-- Donation Link -->
+        <a href="https://vancouver.brahmakumaris.ca/donate-online/" target="_blank" class="btn-secondary" style="border-color: var(--gold-accent); color: var(--gold-accent);" id="donate-btn">
+            💛 Donate Online
+        </a>
+
+        <div class="footer-info" id="footer-text">
+            World Peace Meditation: 3rd Sunday of every month.
+        </div>
+    </div>
+
+    <script>
+        const virtues = [
+            { en: "Purity", hi: "पवित्रता", ref: "“My thoughts are clean and clear like a calm lake.”" },
+            { en: "Peace", hi: "शांति", ref: "“Peace is my original nature; I remain still amidst noise.”" },
+            { en: "Love", hi: "प्रेम", ref: "“Unconditional love flows to everyone without expectation.”" },
+            { en: "Joy", hi: "आनंद", ref: "“True happiness springs from the quiet soul within.”" },
+            { en: "Power", hi: "शक्ति", ref: "“I have the inner resilience to overcome every situation.”" },
+            { en: "Wisdom", hi: "ज्ञान", ref: "“I see the good in every person and every moment.”" },
+            { en: "Courage", hi: "साहस", ref: "“I move forward with faith, fearlessly stepping into light.”" },
+            { en: "Simplicity", hi: "सादगी", ref: "“Being light in thought brings lightness to life.”" }
+        ];
+
+        function drawVirtueCard() {
+            const randomIndex = Math.floor(Math.random() * virtues.length);
+            const selectedCard = virtues[randomIndex];
+
+            document.getElementById('c-en').innerText = selectedCard.en;
+            document.getElementById('c-hi').innerText = selectedCard.hi;
+            document.getElementById('c-ref').innerText = selectedCard.ref;
+
+            // Hide main description and buttons temporarily to focus on the card
+            document.getElementById('main-desc').style.display = 'none';
+            document.querySelector('.btn-primary').style.display = 'none';
+            document.getElementById('song-block').style.display = 'none';
+            document.getElementById('donate-btn').style.display = 'none';
+            document.getElementById('footer-text').style.display = 'none';
+
+            // Show card display
+            document.getElementById('card-display').style.display = 'block';
+        }
+
+        function resetView() {
+            document.getElementById('card-display').style.display = 'none';
+            document.getElementById('main-desc').style.display = 'block';
+            document.querySelector('.btn-primary').style.display = 'block';
+            document.getElementById('song-block').style.display = 'block';
+            document.getElementById('donate-btn').style.display = 'block';
+            document.getElementById('footer-text').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
+
+        
+        
+        
+
+     
+        
